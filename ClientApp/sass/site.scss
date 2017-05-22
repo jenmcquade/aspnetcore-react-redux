@@ -1,0 +1,196 @@
+[data-reactroot] {
+    height: 100% !important;
+    position: absolute;
+    width: 98% !important;
+    padding: 0px;
+    margin: 0px;
+}
+
+.row {
+    height: 100%;
+}
+
+.col-sm-3 {
+    height: 100%;
+}
+
+.navbar-inverse {
+    background-color: #01426a;
+
+    .navbar-brand {
+        text-shadow: 1px 1px 5px rgba(12,0,0,.4);
+    }
+
+    .navbar-nav > li > a {
+        color: white;
+    }
+
+    .navbar-nav > li > a:hover {
+        color: black;
+        text-shadow: 1px 1px 5px rgba(12,0,0,.4);
+    }
+}
+
+
+.main-nav {
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+
+    li {
+
+        a.active,
+        a.active:hover,
+        a.active:focus {
+            text-shadow: 1px 1px 5px rgba(12,0,0,.4);
+            background-color: #4189C7;
+            color: black !important;
+        }
+
+        .glyphicon {
+            text-shadow: 1px 1px 5px rgba(12,0,0,.4);
+            margin-right: 10px;
+        }
+    }
+
+    .alaska-logo {
+        background: url("/dist/alaska.svg") no-repeat top left;
+        fill: white;
+        color: white;
+        display: inline-flex;
+        height: 34px;
+        width: 113px;
+        margin: 25px 25px;
+        float: left;
+    }
+}
+
+.msg-body {
+    padding: 0px;
+    margin: 0px;
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.msg-wrapper {
+    padding: 0px;
+    margin: 0px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.msg-inner {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    padding: 5%;
+}
+
+.grid {
+    .plan {
+        .title {
+            font-weight: bold;
+        }
+        border-radius: 25px;
+        border-color: #333;
+        border-style: solid;
+        border-width: 1px;
+        margin: 1% 1%;
+        padding: 2%;
+        -webkit-box-shadow: 5px 5px 25px -12px rgba(0,0,0,0.75);
+        -moz-box-shadow: 5px 5px 25px -12px rgba(0,0,0,0.75);
+        box-shadow: 5px 5px 25px -12px rgba(0,0,0,0.75);
+    }
+}
+
+.element-item-sizer {
+   margin: 0px;
+   padding: 0px;
+}
+
+@media (max-width: 400px) {
+    .navbar-brand {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    body {
+        padding-top: 0px;
+    }
+    [data-reactroot] {
+        height: 100% !important;
+        position: absolute;
+        width: 100% !important;
+        padding: 0px;
+        margin: 0px;
+    }
+    .col-sm-3 {
+        height: unset;
+    }
+
+    .main-nav {
+        width: 100%;
+    }
+    .navbar-brand {
+        margin-top: 20px;
+    }
+    .grid {
+        .plan {
+            padding: 2%;
+            margin: 2% 15%;
+        }
+    }
+
+}
+
+@media (min-width: 768px) {
+    /* On small screens, convert the nav menu to a vertical sidebar */
+    .main-nav {
+        height: 100%;
+        width: 100%;
+    }
+
+    .main-nav .navbar {
+        border-radius: 0px;
+        border-width: 0px;
+        height: 100%;
+    }
+
+    .main-nav .navbar-header {
+        float: none;
+    }
+
+    .main-nav .navbar-collapse {
+        border-top: 1px solid #444;
+        padding: 0px;
+    }
+
+    .main-nav .navbar ul {
+        float: none;
+    }
+
+    .main-nav .navbar li {
+        float: none;
+        font-size: 15px;
+        margin: 6px;
+    }
+
+    .main-nav .navbar li a {
+        padding: 10px 16px;
+        border-radius: 4px;
+    }
+
+    .main-nav .navbar a {
+        /* If a menu item's text is too long, truncate it */
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
