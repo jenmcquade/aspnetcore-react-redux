@@ -37,9 +37,6 @@
   <ItemGroup>
     <None Include="wwwroot\dist\alaska.svg" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="docker-compose.dcproj" />
-  </ItemGroup>
   <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec Command="npm install" />
