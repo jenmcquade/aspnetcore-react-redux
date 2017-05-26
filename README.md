@@ -2,6 +2,11 @@
 Template for C# ASP .NET Core SPA with React and Redux
 
 ## Up and Running
+
+### Requirements: 
+* NodeJS
+* Webpack
+* Visual Studio 2017 with "AS.NET and web development" selected in the VS installer
 To run using Dotnet Core tools:
 Inside the aspnetcore-react-redux directory<br>
 `$ dotnet restore`<br>
@@ -10,7 +15,13 @@ Inside the aspnetcore-react-redux directory<br>
 `$ webpack`<br>
 `$ dotnet run`
 
+You can also run a build from within Visual Studio using the Build menu. However, you will still need to manually run NPM and Webpack commands in order to generate the site files for the SPA (see above commands).
+
 The application will be available http://localhost:5000
+
+### If you see ...
+"Error. An error occurred while processing your request." ...
+Then webpack needs to be run inside of the main project directory, to generate the CSS and JS files. This is a NodeJS error, not a C#/.NET error.
 
 ## About this App
 
