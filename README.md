@@ -1,5 +1,6 @@
 # aspnetcore-react-redux
 Template for C# ASP .NET Core SPA with React and Redux
+This project builds from this (".") directory.
 
 ## Up and Running
 
