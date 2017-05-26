@@ -6,6 +6,8 @@ To run using Dotnet Core tools:
 Inside the aspnetcore-react-redux directory<br>
 `$ dotnet restore`<br>
 `$ npm install`<br>
+`$ webpack --config="webpack.config.vendor"`<br>
+`$ webpack webpack"`<br>
 `$ dotnet run`
 
 The application will be available http://localhost:5000
