@@ -8,7 +8,8 @@ This project builds from this (".") directory.
 * NodeJS
 * Webpack
 * Visual Studio 2017 with "ASP.NET and web development" selected in the VS installer
-To run using Dotnet Core tools:
+
+### To run using Dotnet Core tools:
 Inside the aspnetcore-react-redux directory<br>
 `$ dotnet restore`<br>
 `$ npm install`<br>
