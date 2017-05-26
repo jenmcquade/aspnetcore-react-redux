@@ -6,7 +6,7 @@ Template for C# ASP .NET Core SPA with React and Redux
 ### Requirements: 
 * NodeJS
 * Webpack
-* Visual Studio 2017 with "AS.NET and web development" selected in the VS installer
+* Visual Studio 2017 with "ASP.NET and web development" selected in the VS installer
 To run using Dotnet Core tools:
 Inside the aspnetcore-react-redux directory<br>
 `$ dotnet restore`<br>
