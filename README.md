@@ -27,7 +27,7 @@ Then webpack needs to be run inside of the main project directory, to generate t
 
 ## About this App
 
-Hello from Jen in Tacoma! This Single Page Application was built per the following guidelines: 
+Hello from Jon in Tacoma! This Single Page Application was built per the following guidelines: 
 
 * .Net 4.6 or higher
 * ASP.NET MVC Website
