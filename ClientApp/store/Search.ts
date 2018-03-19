@@ -1,6 +1,10 @@
 import { fetch, addTask } from 'domain-task';
-import { Action, Reducer, ActionCreator } from 'redux';
+import { Action, Reducer, ActionCreator,createStore, combineReducers, applyMiddleware } from 'redux';
 import { AppThunkAction } from './';
+import createHistory from 'history/createBrowserHistory';
+import { push, RouterAction, routerMiddleware } from 'react-router-redux'
+import configureStore from '../configureStore';
+const history = createHistory();
 
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
@@ -34,6 +38,11 @@ export interface Sort {
     label: string;
 }
 
+export interface push {
+    type: string;
+    label: string;
+}
+
 // -----------------
 // ACTIONS - These are serializable (hence replayable) descriptions of state transitions.
 // They do not themselves have any side-effects; they just describe something that is going to happen.
@@ -59,6 +68,7 @@ interface ReceiveFlightSearchAction {
     type: 'RECEIVE_FLIGHT_SEARCH',
     flights: Flight[];
 }
+
 interface SetSortAction {
     type: "SET_SORT",
     sort: Sort;
@@ -66,7 +76,7 @@ interface SetSortAction {
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SetAirportAction | RequestAirportSearchAction | RequestFlightSearchAction | ReceiveAirportSearchAction | ReceiveFlightSearchAction | SetSortAction;
+type KnownAction = SetAirportAction | RequestAirportSearchAction | RequestFlightSearchAction | ReceiveAirportSearchAction | ReceiveFlightSearchAction | SetSortAction | RouterAction;
 
 // ----------------
 // ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
@@ -90,11 +100,12 @@ export const actionCreators = {
             .then(response => response.json() as Promise<Flight[]>)
             .then(data => {
                 dispatch({ type: 'RECEIVE_FLIGHT_SEARCH', flights: data });
+                dispatch(push('/filter/' + airportCode + '/' + sort.type));
             });
         addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
         dispatch({ type: 'REQUEST_FLIGHT_SEARCH', sort: sort });
     },
-    setSort: (sort: Sort): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    setSort: (airportCode:string, sort: Sort): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SET_SORT', sort: sort });
     },
 };
@@ -173,7 +184,7 @@ export const reducer: Reducer<SearchState> = (state: SearchState, action: KnownA
             };
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
-            const exhaustiveCheck: never = action;
+            const exhaustiveCheck: {} = action;
     }
 
     return state || unloadedState;

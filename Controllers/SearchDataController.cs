@@ -15,7 +15,7 @@ using System.Diagnostics;
 using CsvHelper;
 
 
-namespace alaska.Controllers
+namespace flightsearch.Controllers
 {
 
     [Route("api/[controller]")]
@@ -57,45 +57,49 @@ namespace alaska.Controllers
             var sortType = queryStrings["sort"];
             using (TextReader reader = System.IO.File.OpenText(_env.ContentRootPath + @"\App_Data\flights.csv"))
             {
-                var csv = new CsvReader(reader);
-                List<Flight> searchList = new List<Flight>();
-                // If we didn't receive an airport code, return the full flight list
-                if (!Request.Query.ContainsKey("code") || airportCode == "ALL")
-                {
-                    searchList = csv.GetRecords<Flight>().ToList();
-                }
-                else
-                {
-                    // Compile a list of flights based on 
-                    while (csv.Read())
+                try{
+                    var csv = new CsvReader(reader);
+                    List<Flight> searchList = new List<Flight>();
+                    // If we didn't receive an airport code, return the full flight list
+                    if (!Request.Query.ContainsKey("code") || airportCode == "ALL")
                     {
-                        var fromField = csv.GetField<string>("From");
-                        if (fromField == airportCode)
+                        searchList = csv.GetRecords<Flight>().ToList();
+                    }
+                    else
+                    {
+                        // Compile a list of flights based on 
+                        while (csv.Read())
                         {
-                            searchList.Add(csv.GetRecord<Flight>());
+                            var fromField = csv.GetField<string>("From");
+                            if (fromField == airportCode)
+                            {
+                                searchList.Add(csv.GetRecord<Flight>());
+                            }
                         }
                     }
-                }
 
-                // Sort operations
-                // This shows calling the Sort(Comparison(T) overload using 
-                // an anonymous method for the Comparison delegate. 
-                // This method treats null as the lesser of two values.
-                searchList.Sort(delegate (Flight x, Flight y)
-                {
-                    switch (sortType)
+                    // Sort operations
+                    // This shows calling the Sort(Comparison(T) overload using 
+                    // an anonymous method for the Comparison delegate. 
+                    // This method treats null as the lesser of two values.
+                    searchList.Sort(delegate (Flight x, Flight y)
                     {
-                        case "cabinPrice":
-                            return x.MainCabinPrice.CompareTo(y.MainCabinPrice);
-                        case "flightNumber":
-                            return x.FlightNumber.CompareTo(y.FlightNumber);
-                        default:
-                            return x.Departs.CompareTo(y.Departs);
-                    }
-                });
-                return Json(searchList);
+                        switch (sortType)
+                        {
+                            case "cabinPrice":
+                                return x.MainCabinPrice.CompareTo(y.MainCabinPrice);
+                            case "flightNumber":
+                                return x.FlightNumber.CompareTo(y.FlightNumber);
+                            default:
+                                return x.Departs.CompareTo(y.Departs);
+                        }
+                    });
+                    return Json(searchList);
+                } catch (InvalidCastException e) {
+                    Console.WriteLine(e);
+                }   
             }
-
+            return null;
         }
 
         public class Airport

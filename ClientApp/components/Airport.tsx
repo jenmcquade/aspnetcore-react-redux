@@ -1,45 +1,50 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { Link } from 'react-router';
-import { browserHistory } from 'react-router'; 
+import { BrowserRouter, Link, Route } from 'react-router-dom';
+import { push } from 'react-router-redux'
+import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as SearchState from '../store/Search';
+import setAirportFromUrl from '../App';
 
 // At runtime, Redux will merge together...
 type SearchProps =
     SearchState.SearchState     // ... state we've requested from the Redux store
     & typeof SearchState.actionCreators   // ... plus action creators we've requested
 
-
 class Airport extends React.Component<SearchProps, SearchState.SearchState> {
-    componentWillMount() {
-        // This method runs when the component is first added to the page
-        this.props.requestAirports();
-    }
-
-    public constructor(SearchProps) {
+    public constructor(SearchProps: any) {
         super(SearchProps)
+        this.props = SearchProps;
         this.state = {
-            airports: this.props.airports,
-            airport: { code: this.props.airport.code, name: this.props.airport.code },
-            flights: this.props.flights,
-            isLoading: this.props.isLoading,
-            sorts: this.props.sorts,
-            sort: this.props.sort
+            ...SearchProps
         };
         this.change = this.change.bind(this);
     }
 
+    public setAirportFromUrl(props) {
+        let location = props.router.location.pathname;
+        let airportCode = location.split('/filter/')[1] ? location.split('/filter/')[1] : "ALL";
+        for(let ap in props.airports) {
+            if(props.airports[ap].code === airportCode) {
+                props.setAirport({ code: props.airports[ap].code, name: props.airports[ap].name });
+            }
+        }
+    }
+
+    public componentWillReceiveProps(nextProps) {
+        this.setAirportFromUrl(nextProps);
+    }
+
     public change(event) {
-        if (event.target.value != "ALL") {
-            this.props.setAirport({ code: event.target.value, name: event.target.options[event.target.selectedIndex].innerHTML });
-            browserHistory.push('filter/' + event.target.value);
-        } 
+        this.props.setAirport({ code: event.target.value, name: event.target.options[event.target.selectedIndex].innerHTML });
+        this.props.requestFlights(event.target.value.toString(), { type: 'departs', label: 'Departing'});
+        this.render();
     }
 
     private renderSelect() {
-        return <select id="airport" ref="airportSelect" onChange={this.change} value={this.state.airport.code} className="selectpicker">
+        return <select id="airport" ref="airportSelect" onChange={this.change} value={this.props.airport.code} className="selectpicker">
             <option value="ALL">Airports</option>
             {this.props.airports.map(airport =>
                 <option key={airport.code} value={airport.code}>{airport.name}</option>
@@ -57,12 +62,14 @@ class Airport extends React.Component<SearchProps, SearchState.SearchState> {
             </div>
         </div>;
     }  
-
-}
+}   
 
 export default connect(
     (state: ApplicationState) => state.search, // Selects which state properties are merged into the component's props
     SearchState.actionCreators                 // Selects which action creators are merged into the component's props
 )(Airport);
+
+
+
 
 

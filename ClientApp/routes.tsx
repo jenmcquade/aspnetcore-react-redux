@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Router, Route, HistoryBase } from 'react-router';
-import { Layout } from './components/Layout';
+import { Router, Route } from 'react-router';
+import Layout from './components/Layout';
 import Home from './components/Home';
 import Airport from './components/Airport';
 import Filter from './components/Filter';
 import About from './components/About';
 
-export default <Route component={ Layout }>
+export default <Route components={ Layout }>
     <Route path='/' components={{ body: Home }} />
     <Route path='/airport' components={{ body: Airport }} />
     <Route path='/filter' components={{ body: Filter }}>

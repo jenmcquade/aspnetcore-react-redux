@@ -17,15 +17,15 @@ module.exports = (env) => {
         },
         module: {
             rules: [
-                { test: /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/, use: 'url-loader?limit=100000' }
+                { test: /\.(png|woff|woff2|eot|ttf)(\?|$)/, use: 'url-loader?limit=100000' }
             ]
         },
         entry: {
             vendor: [
                 'bootstrap',
-                'bootstrap/dist/css/bootstrap.css',
                 'domain-task',
                 'event-source-polyfill',
+                'history',
                 'jquery',
                 'isotope-layout',
                 'react',
@@ -34,6 +34,7 @@ module.exports = (env) => {
                 'react-redux',
                 'redux',
                 'redux-thunk',
+                'react-router-dom',
                 'react-router-redux',
             ],
         },
@@ -55,7 +56,26 @@ module.exports = (env) => {
         output: { path: path.join(__dirname, 'wwwroot', 'dist') },
         module: {
             rules: [
-                { test: /\.css(\?|$)/, use: extractCSS.extract({ use: 'css-loader' }) }
+                {
+                    test: /\.css$/,
+                    loader: path.resolve('css-loader?importLoaders=1'), 
+                },
+                {
+                    test: /\.(eot|svg|ttf|woff|woff2|svg)$/,
+                    use: {
+                        loader: path.resolve('file-loader?name=[name].[ext]'),
+                    }
+                },
+                {
+                    test: /\.svg/,
+                    use: {
+                        loader: 'svg-url-loader',
+                        options: {
+                            encoding: 'base64',
+                            limit: 1024
+                        }
+                    }
+                },
             ]
         },
         plugins: [
@@ -76,11 +96,25 @@ module.exports = (env) => {
             path: path.join(__dirname, 'ClientApp', 'dist'),
             libraryTarget: 'commonjs2',
         },
-        module: {       
+        module: {
             rules: [
-                { test: /\.css(\?|$)/, use: 'css-loader' }
-            ]
+                {
+                    test: /\.css$/,
+                    loader: path.resolve('css-loader?importLoaders=1'), 
+                },
+                {
+                    test: /\.svg/,
+                    use: {
+                        loader: 'svg-url-loader',
+                        options: {
+                            encoding: 'base64',
+                            limit: 1024
+                        }
+                    }
+                },
+            ],  
         },
+
         entry: { vendor: ['aspnet-prerendering', 'react-dom/server'] },
         plugins: [
             new webpack.DllPlugin({

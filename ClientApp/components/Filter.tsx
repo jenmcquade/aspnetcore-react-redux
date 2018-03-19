@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { jQuery } from 'jquery';
 import { Isotope } from 'isotope-layout';
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as SearchState from '../store/Search';
@@ -14,18 +14,17 @@ type SearchProps =
     & { params: { airportCode: string } };       // ... plus incoming routing parameters
 
 class Filter extends React.Component<SearchProps, SearchState.SearchState> {
-    public componentWillMount() {
-        // This method runs when the component is first added to the page
-        this.props.requestAirports();
-        this.props.requestFlights(this.props.airport.code, this.props.sort);
+    public constructor(SearchProps: any) {
+        super(SearchProps)
+        this.props = SearchProps;
+        this.state = {
+            ...SearchProps
+        };
+        this.change = this.change.bind(this);
     }
 
-    public constructor(SearchProps) {
-        super(SearchProps)
-        if (this.props.params.airportCode == "") {
-            this.props.setAirport({ code: 'ALL', name: 'all locations' });
-        }
-        this.change = this.change.bind(this);
+    public componentWillMount() {
+        this.setAirportFromUrl(this.props);
     }
 
     public render() {
@@ -43,9 +42,22 @@ class Filter extends React.Component<SearchProps, SearchState.SearchState> {
     }  
 
     public change(event) {
-       this.props.setSort(event.target.value);
-       this.props.requestFlights(this.props.airport.code, { type: event.target.value, label: event.target.options[event.target.selectedIndex].innerHTML });
+       this.props.requestFlights(this.props.airport.code.toString(), { type: event.target.value, label: event.target.options[event.target.selectedIndex].innerHTML });
+       this.props.setSort(this.props.airport.code.toString(), { type: event.target.value, label: event.target.options[event.target.selectedIndex].innerHTML })
        this.render();
+    }
+
+    public setAirportFromUrl(props) {
+        if(!props.isLoading) {
+            let location = props.router.location.pathname;
+            let airportCode = location.split('/filter/')[1] ? location.split('/filter/')[1] : "ALL";
+            for(let ap in props.airports) {
+                if(props.airports[ap].code === airportCode) {
+                    props.setAirport({ code: props.airports[ap].code, name: props.airports[ap].name });
+                }
+            }
+            this.props.requestFlights(this.props.airport.code, { type: 'departing', label: 'Department'});  
+        }
     }
 
     private renderTitleIntro() {
@@ -58,7 +70,7 @@ class Filter extends React.Component<SearchProps, SearchState.SearchState> {
         return <select id="sort" ref="sortSelect" onChange={this.change} value={this.props.sort.type} className="selectpicker">
             <option value="flightNumber">Sort by</option>
             {this.props.sorts.map(sort =>
-                <option key={sort.type} value={sort.type}>{sort.label}</option>
+                <option key={sort.type} value={sort.type} >{sort.label}</option>
             )};
         </select>
     } 

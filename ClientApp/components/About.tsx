@@ -1,11 +1,17 @@
 import * as React from 'react';
+import * as SearchState from '../store/Search';
 
-export default class About extends React.Component<void, void> {
+// At runtime, Redux will merge together...
+type SearchProps =
+    SearchState.SearchState     // ... state we've requested from the Redux store
+    & typeof SearchState.actionCreators   // ... plus action creators we've requested
+
+export default class About extends React.Component<SearchProps, SearchState.SearchState> {
     public render() {
         return <div className="msg-body">
             <div className="msg-wrapper">
                 <div className="msg-inner">
-                    <h1>Hello from Jen in Tacoma!</h1>
+                    <h1>Hello from Jon McQuade in Tacoma!</h1>
                     <p>This Single Page Application was built per the following guidelines:</p>
                     <ul>
                         <li>.Net 4.6 or higher</li>

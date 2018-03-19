@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Glyphicons Halflings'), url(/dist/glyphicons-halflings-regular.woff2) format('woff2');
+}
+
+html,body,.container {
+    height:105%;
+}
+
 [data-reactroot] {
     height: 100% !important;
     position: absolute;
@@ -6,15 +17,43 @@
     margin: 0px;
 }
 
-.row {
+#react-app {
     height: 100%;
+    width: 100%;
+}
+
+.row {
+    min-height: 100%;
+    display: inline-table;
+}
+
+.row .no-float {
+    display: table-cell;
 }
 
 .col-sm-3 {
     height: 100%;
+    width: 25% !important;
+}
+
+.col-sm-9 {
+    height: 100%;
+    width: 75% !important;
+    position: absolute;
+    left: 10%;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    min-height: 100%;
+    margin-top: -50px;
+    padding: 50px 0 0 0; /*set left/right padding according to needs*/
+    box-sizing: border-box;   
 }
 
 .navbar-inverse {
+    min-height: 100%;
     background-color: #01426a;
 
     .navbar-brand {
@@ -31,14 +70,14 @@
     }
 }
 
-
 .main-nav {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1;
     width: 100%;
     height: 100%;
+    display: flex;
+    position: relative;
 
     li {
 
@@ -56,15 +95,14 @@
         }
     }
 
-    .alaska-logo {
-        background: url("/dist/alaska.svg") no-repeat top left;
+    .app-logo {
+        background: url("/dist/plane.svg") no-repeat top left;
         fill: white;
         color: white;
         display: inline-flex;
-        height: 34px;
-        width: 113px;
-        margin: 25px 25px;
-        float: left;
+        height: 8em;
+        width:  8em;
+        margin: 5% 25%;
     }
 }
 
@@ -72,8 +110,6 @@
     padding: 0px;
     margin: 0px;
     display: table;
-    position: absolute;
-    height: 100%;
     width: 100%;
 }
 
@@ -88,7 +124,6 @@
     margin-left: auto;
     margin-right: auto;
     width: 100%;
-    padding: 5%;
 }
 
 .grid {
@@ -131,11 +166,13 @@
         margin: 0px;
     }
     .col-sm-3 {
-        height: unset;
+        height: 100%;
     }
 
     .main-nav {
         width: 100%;
+        min-height: 100%;
+        position: fixed;
     }
     .navbar-brand {
         margin-top: 20px;
