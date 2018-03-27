@@ -3,7 +3,9 @@
     ["env", { "modules": false }],
     "react"
   ],
-  "plugins": [
-    "transform-object-rest-spread"
-  ]
+	"plugins": [
+		"transform-object-rest-spread",
+		"awesome-typescript-loader",
+		"react-hot-loader/babel"
+	]
 }

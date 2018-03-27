@@ -1,41 +1,38 @@
-import { createStore, applyMiddleware, compose, combineReducers, GenericStoreEnhancer } from 'redux';
+import { createStore, applyMiddleware, compose, combineReducers, GenericStoreEnhancer, Store, StoreEnhancerStoreCreator, ReducersMapObject } from 'redux';
 import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
-import createHistory from 'history/createBrowserHistory';
+import * as StoreModule from './store';
+import { History } from 'history';
 
-import * as Store from './store';
+export default function configureStore(history: History, initialState?: StoreModule.ApplicationState) {
+	// Build middleware. These are functions that can process the actions before they reach the store.
+	const windowIfDefined = typeof window === 'undefined' ? null : window as any;
+	// If devTools is installed, connect to it
+	const devToolsExtension = windowIfDefined && windowIfDefined.__REDUX_DEVTOOLS_EXTENSION__ as () => GenericStoreEnhancer;
+	const createStoreWithMiddleware:any = compose(
+		applyMiddleware(thunk, routerMiddleware(history)),
+		devToolsExtension ? devToolsExtension() : <S>(next: StoreEnhancerStoreCreator<S>) => next
+	)(createStore);
 
-// History is browser history
-const history = createHistory();
+	// Combine all reducers and instantiate the app-wide store instance
+	const allReducers = buildRootReducer(StoreModule.reducers);
+	const store = createStoreWithMiddleware(allReducers, initialState) as Store<StoreModule.ApplicationState>;
 
-const rMiddleware = routerMiddleware(history);
+	// Enable Webpack hot module replacement for reducers
+	if (module.hot) {
+		module.hot.accept('./store', () => {
+			const nextRootReducer = require<typeof StoreModule>('./store');
+			store.replaceReducer(buildRootReducer(nextRootReducer.reducers));
+		});
+	}
 
-export default function configureStore(initialState?: Store.ApplicationState) {
-    // Build middleware. These are functions that can process the actions before they reach the store.
-    const windowIfDefined = typeof window === 'undefined' ? null : window as any;
-    // If devTools is installed, connect to it
-    const devToolsExtension = windowIfDefined && windowIfDefined.devToolsExtension as () => GenericStoreEnhancer;
-    const createStoreWithMiddleware = compose(
-        applyMiddleware(thunk),
-        applyMiddleware(rMiddleware),
-        devToolsExtension ? devToolsExtension() : f => f
-    )(createStore);
-
-    // Combine all reducers and instantiate the app-wide store instance
-    const allReducers = buildRootReducer(Store.reducers);
-    const store = createStoreWithMiddleware(allReducers, initialState);
-
-    // Enable Webpack hot module replacement for reducers
-    if (module.hot) {
-        module.hot.accept('./store', () => {
-            const nextRootReducer = require<typeof Store>('./store');
-            store.replaceReducer(buildRootReducer(nextRootReducer.reducers));
-        });
-    }
-
-    return store;
+	return store;
 }
 
-function buildRootReducer(allReducers) {
-    return combineReducers<Store.ApplicationState>(Object.assign({}, allReducers, { routing: routerReducer }));
+export function getState(history, initialState) {
+	return configureStore(history, initialState)
+}
+
+function buildRootReducer(allReducers: ReducersMapObject) {
+	return combineReducers<StoreModule.ApplicationState>({ ...allReducers, router: routerReducer });
 }

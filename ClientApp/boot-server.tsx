@@ -1,54 +1,94 @@
 import * as React from 'react';
-
 import { Provider } from 'react-redux';
-import { renderToString } from 'react-dom/server';
-import { match, StaticRouter } from 'react-router';
+import { renderToString, renderToStaticMarkup } from 'react-dom/server';
+import { Route } from 'react-router';
+import { StaticRouter, RouteComponentProps } from 'react-router-dom';
+import { replace } from 'react-router-redux';
+import { AppContainer } from 'react-hot-loader';
+import { createMemoryHistory } from 'history';
 import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
-import { ConnectedRouter } from 'react-router-redux'
-import routes from './routes';
-import configureStore from './configureStore';
+import { fetch, addTask } from 'domain-task';
 
-const ReactRouter = require('react-router');
-const routerMatch = ReactRouter.match;
+import Routes, { PropsType } from './Components/Routes';
+import configureStore from './configureStore';
+import * as StateModule from './store';
+import { ApplicationState } from './store';
+import { AppThunkAction } from './store';
+import * as SearchState from './store/Search';
+import './sass/site.scss';
 
 export default createServerRenderer(params => {
-    return new Promise<RenderResult>((resolve, reject) => {
-        // Match the incoming request against the list of client-side routes
-        const store = configureStore();
-        routerMatch({ routes, location: params.location }, (error, redirectLocation, renderProps: any) => {
-            if (error) {
-                throw error;
-            }
+	return new Promise<RenderResult>((resolve, reject) => {
+		console.log(`Node server: url = ${params.url}, origin=${params.origin}, baseUrl=${params.baseUrl}`);
+		const store = configureStore(createMemoryHistory());
+		const state = store.getState();
+		const router = state.router;
+		const actions = SearchState.actionCreators;
 
-            // If there's a redirection, just send this information back to the host application
-            if (redirectLocation) {
-                resolve({ redirectUrl: redirectLocation.pathname });
-                return;
-            }
+		// Prepare Redux store with in-memory history, and dispatch a navigation event
+		// corresponding to the incoming URL
+		const basename = params.baseUrl.substring(0, params.baseUrl.length - 1); // Remove trailing slash
+		const urlAfterBasename = params.url.substring(basename.length);
+		const props = {
+			...state,
+			...SearchState.actionCreators,
+			...store,
+		}
+		const InlineScript = ({ script }) => <script dangerouslySetInnerHTML={{ __html: script }} />
 
-            // If it didn't match any route, renderProps will be undefined
-            if (!renderProps) {
-                throw new Error(`The location '${ params.url }' doesn't match any route configured in react-router.`);
-            }
+		store.dispatch(replace(urlAfterBasename));															 
+		store.dispatch(actions.requestAirports());
+		store.dispatch(actions.setAirportFromUrl(
+			urlAfterBasename, SearchState.actionCreators
+		));
 
-            // Build an instance of the application
-            const app = (
-                <Provider store={ store }>
-                    <StaticRouter {...renderProps} />
-                </Provider>
-            );
+		// Prepare an instance of the application and perform an inital render that will
+		// cause any async tasks (e.g., data access) to begin
+		const routerContext: any = {};
+		const App: any = () => (
+			<AppContainer>
+				<Provider store={store}>
+					<StaticRouter context={routerContext} location={params.location}>
+						<div id="App">
+							<Routes {...props} />
+							<InlineScript script={"window.initialReduxState = " + JSON.stringify(store.getState())} />
+						</div>
+					</StaticRouter>
+					</Provider>
+			</AppContainer>
+		);
 
-            // Perform an initial render that will cause any async tasks (e.g., data access) to begin
-            renderToString(app);
+		renderToString(<App />);
 
-            // Once the tasks are done, we can perform the final render
-            // We also send the redux store state, so the client can continue execution where the server left off
-            params.domainTasks.then(() => {
-                resolve({
-                    html: renderToString(app),
-                    globals: { initialReduxState: store.getState() }
-                });
-            }, reject); // Also propagate any errors back into the host application
-        });
-    });
+		// If there's a redirection, just send this information back to the host application
+		if (routerContext.url) {
+			resolve({
+				redirectUrl: routerContext.url,
+				statusCode: routerContext.status
+			});
+			return;
+		}
+
+		// Once any async tasks are done, we can perform the final render
+		// We also send the redux store state, so the client can continue execution where the server left off
+		params.domainTasks.then(() => {
+			if (!routerContext.url) { // && (!routerContext.status || (routerContext.status >= 200 && routerContext.status < 300)))
+				const appString = renderToString(
+					<div id="react-app">
+						<App />
+					</div>
+				);
+
+				resolve({
+					html: appString,
+					statusCode: routerContext.status
+				});
+			} else {
+				resolve({
+					redirectUrl: routerContext.url,
+					statusCode: routerContext.status
+				});
+			}
+		}, reject); // Also propagate any errors back into the host application
+	});
 });

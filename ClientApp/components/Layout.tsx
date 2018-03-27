@@ -1,54 +1,32 @@
 import * as React from 'react';
 import { Col, Grid, Row } from 'react-bootstrap';
 import { NavMenu } from './NavMenu';
+import { connect } from 'react-redux';
+import { StoreType, PropsType } from './Routes';
 import { ApplicationState } from '../store';
 import * as SearchState from '../store/Search';
-import { connect } from 'react-redux';
-import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
 
-import Home from './Home';
-import Airport from './Airport';
-import Filter from './Filter';
-import About from './About';
-
-// At runtime, Redux will merge together...
-type SearchProps =
-    SearchState.SearchState     // ... state we've requested from the Redux store
-    & typeof SearchState.actionCreators   // ... plus action creators we've requested
-
-export class Layout extends React.Component<SearchProps, SearchState.SearchState> {
-    public constructor(SearchProps) {
-        super(SearchProps)
-        this.props = SearchProps;
-        this.state = {
-            ...SearchProps,
-        }
-    }
-    public render() {
-        return <BrowserRouter >
-            <div className='container'>
-                <div className='row'>
-                    <div className='col-sm-3'>
-                        <NavMenu {...this.props} />
-                    </div>
-                    <div className='col-sm-9'>
-                        <Switch>
-                            <Route exact path='/' component={Home} ><div><Home {...this.props}/></div></Route>
-                            <Route exact path='/airport' ><div><Airport {...this.props}/><Filter {...this.props}/></div></Route>
-                            <Route exact path='/filter' ><div><Airport {...this.props}/><Filter {...this.props}/></div></Route>
-                            <Route exact path='/filter/:airportCode' ><div><Airport {...this.props}/><Filter {...this.props}/></div></Route> 
-                            <Route exact path='/filter/:airportCode/:sortBy' ><div><Airport {...this.props}/><Filter {...this.props}/></div></Route>
-                            <Route exact path='/about' component={About}><div><About {...this.props}/></div></Route>
-                        </Switch>
-                    </div>
-                </div>
-            </div>
-        </BrowserRouter>
-    }
+class Layout extends React.Component<PropsType, ApplicationState> {
+	public render() {
+		return <div className="container-fluid h-100">
+			<Row className="justify-content-center h-100">
+				<Col id="contextNav" className="h-100 col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3 hidden-md-down">
+					<section>
+						<NavMenu {...this.props} />
+					</section>
+				</Col>
+				<Col id="contextBody" className="h-100 col-6 col-sm-8 col-md-8 col-lg-7 col-xl-7 align-self-start">
+					<section>
+						{this.props.children}
+					</section>
+				</Col>
+			</Row>
+		</div>
+	}
 }
-
 export default connect(
-    (state: ApplicationState) => state, // Selects which state properties are merged into the component's props
-    SearchState.actionCreators                 // Selects which action creators are merged into the component's props
+	(state: ApplicationState) => state, // Selects which state properties are merged into the component's props
+	SearchState.actionCreators, // Selects which action creators are merged into the component's props
 )(Layout);
+
 

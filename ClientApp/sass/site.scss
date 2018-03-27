@@ -1,60 +1,122 @@
-@font-face {
-    font-family: 'Glyphicons Halflings';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Glyphicons Halflings'), url(/dist/glyphicons-halflings-regular.woff2) format('woff2');
-}
-
-html,body,.container {
-    height:105%;
-}
-
 [data-reactroot] {
-    height: 100% !important;
+    min-height: 100% !important;
     position: absolute;
-    width: 98% !important;
+    min-width: 100% !important;
     padding: 0px;
     margin: 0px;
 }
 
-#react-app {
-    height: 100%;
-    width: 100%;
+html, body {
+	height: 100%;
 }
 
-.row {
+body {
+	background: url("/dist/plane.svg") fixed no-repeat top left;
+	background-size: 100%, 100%;
+}
+
+pre code {
+	background-color: #eee;
+	border: 1px solid #999;
+	display: block;
+	padding: 20px;
+}
+
+#root {
     min-height: 100%;
-    display: inline-table;
+    min-width: 100%;
 }
 
-.row .no-float {
-    display: table-cell;
+#App {
+	min-height: 100%;
+	min-width: 100%;
 }
 
-.col-sm-3 {
-    height: 100%;
-    width: 25% !important;
+.row > [class*='col-'] {
+	display: flex;
+	flex-direction: column;
 }
 
-.col-sm-9 {
-    height: 100%;
-    width: 75% !important;
-    position: absolute;
-    left: 10%;
+#App .container-fluid {
+	min-height: 100%;
+	min-width: 100%;
+	display: flex;
+	padding: 0;
+
+	.container {
+		display: table;
+		min-width: 100%;
+		min-height: 100%;
+		margin-top: -50px;
+		padding: 50px 0 0 0; /*set left/right padding according to needs*/
+		box-sizing: border-box;
+	}
+
+	.row {
+		min-height: 100%;
+		min-width: 100%;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+
+		.no-float {
+			display: inline-table;
+			float: none;
+		}
+	}
+
+	.app-logo {
+		background: url("/dist/plane.svg") no-repeat;
+		background-size: 100%, 100%;
+		fill: white;
+		color: white;
+		height: 5em;
+		width: 5em;
+		margin: 0 25%;
+	}
 }
 
-.container {
-    display: flex;
-    width: 100%;
-    min-height: 100%;
-    margin-top: -50px;
-    padding: 50px 0 0 0; /*set left/right padding according to needs*/
-    box-sizing: border-box;   
+#contextNav, #contextBody {
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+	min-height: 100%;
+
+	section {
+		height: 100%;
+		background: rgba(255,255,255,.9);
+
+		.msg-body {
+			padding: 2em;
+			margin: 0px;
+			display: table;
+			width: 100%;
+			height: 100vh !important;
+
+			.msg-inner {
+				padding-bottom: 5em;
+			}
+		}
+
+		.msg-wrapper {
+			padding: 0px;
+			margin: 0px;
+			display: table-cell;
+			vertical-align: middle;
+		}
+
+		.msg-inner {
+			margin-left: auto;
+			margin-right: auto;
+			width: 100%;
+		}
+	}
 }
 
 .navbar-inverse {
     min-height: 100%;
     background-color: #01426a;
+	align-content: baseline;
 
     .navbar-brand {
         text-shadow: 1px 1px 5px rgba(12,0,0,.4);
@@ -65,68 +127,47 @@ html,body,.container {
     }
 
     .navbar-nav > li > a:hover {
-        color: black;
+        color: white;
         text-shadow: 1px 1px 5px rgba(12,0,0,.4);
     }
 }
 
 .main-nav {
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	position: fixed;
 
-    li {
+	.navbar-header {
+		width: 100%;
 
-        a.active,
-        a.active:hover,
-        a.active:focus {
-            text-shadow: 1px 1px 5px rgba(12,0,0,.4);
-            background-color: #4189C7;
-            color: black !important;
-        }
+		a {
+			width: 100%;
+		}
+	}
 
-        .glyphicon {
-            text-shadow: 1px 1px 5px rgba(12,0,0,.4);
-            margin-right: 10px;
-        }
-    }
+	li {
 
-    .app-logo {
-        background: url("/dist/plane.svg") no-repeat top left;
-        fill: white;
-        color: white;
-        display: inline-flex;
-        height: 8em;
-        width:  8em;
-        margin: 5% 25%;
-    }
+		a.active,
+		a.active:hover,
+		a.active:focus {
+			text-shadow: 1px 1px 5px rgba(12,0,0,.4);
+			background-color: #4189C7;
+			color: black !important;
+		}
+
+		.glyphicon {
+			text-shadow: 1px 1px 5px rgba(12,0,0,.4);
+			margin-right: 10px;
+		}
+	}
+
+
 }
 
-.msg-body {
-    padding: 0px;
-    margin: 0px;
-    display: table;
-    width: 100%;
-}
-
-.msg-wrapper {
-    padding: 0px;
-    margin: 0px;
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.msg-inner {
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-}
 
 .grid {
+	display: flex;
     .plan {
         .title {
             font-weight: bold;
@@ -135,13 +176,23 @@ html,body,.container {
         border-color: #333;
         border-style: solid;
         border-width: 1px;
-        margin: 1% 1%;
-        padding: 2%;
         -webkit-box-shadow: 5px 5px 25px -12px rgba(0,0,0,0.75);
         -moz-box-shadow: 5px 5px 25px -12px rgba(0,0,0,0.75);
         box-shadow: 5px 5px 25px -12px rgba(0,0,0,0.75);
     }
+	.flight {
+		text-align: center;
+	}
+	.flight .plan{
+		text-align: left;
+		background:rgba(255,255,255,0.8);
+		display: inline-grid;
+		padding: 1em;
+		margin: 1em;
+	}
 }
+
+
 
 .element-item-sizer {
    margin: 0px;
@@ -149,31 +200,36 @@ html,body,.container {
 }
 
 @media (max-width: 400px) {
-    .navbar-brand {
-        display: none;
-    }
+	h1, h2 {
+		font-size: 0.7em;
+	}
+	.main-nav .navbar-header {
+		display: none;
+	}
+
+	.flight .plan {
+		padding: 0em !important;
+		margin: 1em 0 !important;
+	}
+	.flight .plan {
+		background: none !important;
+		display: inline-grid;
+		padding: 1%;
+		border: unset;
+		box-shadow: none;
+		border-radius: 0;
+	}
+
 }
 
 @media (max-width: 767px) {
+
     body {
         padding-top: 0px;
     }
-    [data-reactroot] {
-        height: 100% !important;
-        position: absolute;
-        width: 100% !important;
-        padding: 0px;
-        margin: 0px;
-    }
-    .col-sm-3 {
-        height: 100%;
-    }
-
-    .main-nav {
-        width: 100%;
-        min-height: 100%;
-        position: fixed;
-    }
+	.app-logo {
+		margin-left: 1%;
+	}
     .navbar-brand {
         margin-top: 20px;
     }
@@ -183,21 +239,14 @@ html,body,.container {
             margin: 2% 15%;
         }
     }
-
+	.flight .plan {
+		background: rgba(255,255,255,0.9);
+		display: inline-grid;
+		padding: 1%;
+	}
 }
 
 @media (min-width: 768px) {
-    /* On small screens, convert the nav menu to a vertical sidebar */
-    .main-nav {
-        height: 100%;
-        width: 100%;
-    }
-
-    .main-nav .navbar {
-        border-radius: 0px;
-        border-width: 0px;
-        height: 100%;
-    }
 
     .main-nav .navbar-header {
         float: none;
@@ -223,6 +272,10 @@ html,body,.container {
         border-radius: 4px;
     }
 
+	.navbar-brand {
+		width: 50%;
+	}
+
     .main-nav .navbar a {
         /* If a menu item's text is too long, truncate it */
         width: 100%;
@@ -230,4 +283,16 @@ html,body,.container {
         overflow: hidden;
         text-overflow: ellipsis;
     }
+}
+
+@media (max-width: 1150px) {
+	.app-logo {
+		width: 50% !important;
+	}
+}
+
+@media (min-width: 1150px) {
+	.app-logo {
+		margin: 0 33% !important;
+	}
 }

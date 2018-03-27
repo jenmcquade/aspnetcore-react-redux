@@ -1,15 +1,7 @@
 import * as React from 'react';
-import { BrowserRouter, Link, Route } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { ApplicationState } from '../store';
-import * as SearchState from '../store/Search';
+import { Link } from 'react-router-dom';
 
-// At runtime, Redux will merge together...
-type SearchProps =
-    SearchState.SearchState     // ... state we've requested from the Redux store
-    & typeof SearchState.actionCreators   // ... plus action creators we've requested
-
-export default class Home extends React.Component<SearchProps, SearchState.SearchState> {
+export default class Home extends React.Component {
     public render() {
         return <div className="msg-body">
             <div className="msg-wrapper">

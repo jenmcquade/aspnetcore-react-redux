@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 
+
 namespace flightsearch
 {
     public class Startup
@@ -26,7 +27,12 @@ namespace flightsearch
         {
             // Add framework services.
             services.AddMvc();
+            services.AddNodeServices(options => {
+                options.LaunchWithDebugging = true;
+                options.DebuggingPort = 9229;
+            }); 
 
+			services.AddSpaPrerenderer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +47,7 @@ namespace flightsearch
                 app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions {
                     HotModuleReplacement = true,
                     ReactHotModuleReplacement = true
-                });
+				});
             }
             else
             {

@@ -17,7 +17,7 @@ Inside the aspnetcore-react-redux directory<br>
 `$ webpack`<br>
 `$ dotnet run`
 
-You can also run a build from within Visual Studio using the Build menu. However, you will still need to manually run NPM and Webpack commands in order to generate the site files for the SPA (see above commands).
+You can also run a build from within Visual Studio using the Build menu. However, you will still need to manually run NPM and Webpack commands in order to generate the server files for the SPA (see above commands).
 
 The application will be available http://localhost:5000
 

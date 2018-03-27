@@ -1,10 +1,8 @@
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator,createStore, combineReducers, applyMiddleware } from 'redux';
 import { AppThunkAction } from './';
-import createHistory from 'history/createBrowserHistory';
 import { push, RouterAction, routerMiddleware } from 'react-router-redux'
 import configureStore from '../configureStore';
-const history = createHistory();
 
 // -----------------
 // STATE - This defines the type of data maintained in the Redux store.
@@ -83,37 +81,55 @@ type KnownAction = SetAirportAction | RequestAirportSearchAction | RequestFlight
 // They don't directly mutate state, but they can have external side-effects (such as loading data).
 
 export const actionCreators = {
-    setAirport: (airport: Airport): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'SET_AIRPORT', airport: airport });
-    },
-    requestAirports: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        let fetchTask = fetch(`/api/Search/Airports`)
-            .then(response => response.json() as Promise<Airport[]>)
-            .then(data => {
-                dispatch({ type: 'RECEIVE_AIRPORT_SEARCH', airports: data });
-            });
-        addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
-        dispatch({ type: 'REQUEST_AIRPORT_SEARCH' });
-    },
-    requestFlights: (airportCode: string, sort: Sort): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        let fetchTask = fetch(`/api/Search/Flights?code=${airportCode}&sort=${sort.type}`)
-            .then(response => response.json() as Promise<Flight[]>)
-            .then(data => {
-                dispatch({ type: 'RECEIVE_FLIGHT_SEARCH', flights: data });
-                dispatch(push('/filter/' + airportCode + '/' + sort.type));
-            });
-        addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
-        dispatch({ type: 'REQUEST_FLIGHT_SEARCH', sort: sort });
-    },
-    setSort: (airportCode:string, sort: Sort): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'SET_SORT', sort: sort });
-    },
+  setAirport: (airport: Airport): AppThunkAction<KnownAction> => (dispatch, getState) => {
+      dispatch({ type: 'SET_AIRPORT', airport: airport });
+	},
+	setAirportFromUrl: (path, actions): AppThunkAction<KnownAction> => (dispatch, getState) => {
+		try {
+			let airportCode =
+				path.split('/filter/')[1] ?
+				path.split('/filter/')[1] :
+				"ALL";
+			for (let ap in getState()['search'].airports) {
+				if (getState()['search'].airports[ap].code === airportCode) {
+					dispatch(actions.setAirport(
+						{
+							code: airportCode, name: getState()['search'][ap].name
+						}
+					))
+				}
+			}
+		} catch (e) {
+			console.log(e.message);
+		}
+	},
+  requestAirports: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
+      let fetchTask = fetch(`/api/Search/Airports`)
+          .then(response => response.json() as Promise<Airport[]>)
+          .then(data => {
+              dispatch({ type: 'RECEIVE_AIRPORT_SEARCH', airports: data });
+          });
+      addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
+      dispatch({ type: 'REQUEST_AIRPORT_SEARCH' });
+  },
+  requestFlights: (airportCode: string, sort: Sort): AppThunkAction<KnownAction> => (dispatch, getState) => {
+      let fetchTask = fetch(`/api/Search/Flights?code=${airportCode}&sort=${sort.type}`)
+          .then(response => response.json() as Promise<Flight[]>)
+          .then(data => {
+              dispatch({ type: 'RECEIVE_FLIGHT_SEARCH', flights: data });
+          });
+      addTask(fetchTask); // Ensure server-side prerendering waits for this to complete
+      dispatch({ type: 'REQUEST_FLIGHT_SEARCH', sort: sort });
+  },
+  setSort: (airportCode:string, sort: Sort): AppThunkAction<KnownAction> => (dispatch, getState) => {
+      dispatch({ type: 'SET_SORT', sort: sort });
+  },
 };
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
-const unloadedState: SearchState = {
+export const unloadedState: SearchState = {
     airports: [],
     airport: { code: "ALL", name: "all locations" },
     flights: [],
@@ -123,7 +139,7 @@ const unloadedState: SearchState = {
         { type: "flightNumber", label: "Flight number" },
         { type: "cabinPrice", label: "Price" },
     ],
-    sort: { type: "flightNumber", label: "Flight number" }
+    sort: { type: "flightNumber", label: "Flight Number" }
 };
 
 export const reducer: Reducer<SearchState> = (state: SearchState, action: KnownAction) => {

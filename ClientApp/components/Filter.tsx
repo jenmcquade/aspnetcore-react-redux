@@ -1,100 +1,105 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { jQuery } from 'jquery';
-import { Isotope } from 'isotope-layout';
-import { Link, withRouter } from 'react-router-dom'
+import * as $ from "jquery";
+import * as Isotope from 'isotope-layout';
+import { Link, withRouter } from 'react-router-dom';
+import { push } from 'react-router-redux'
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
+import * as StoreModule from '../store';
 import * as SearchState from '../store/Search';
+import { StoreType, PropsType } from './Routes';
 
-// At runtime, Redux will merge together...
-type SearchProps =
-    SearchState.SearchState     // ... state we've requested from the Redux store
-    & typeof SearchState.actionCreators   // ... plus action creators we've requested
-    & { params: { airportCode: string } };       // ... plus incoming routing parameters
+export const changeSort = (event: any, props: PropsType) => {
+	let v = event.target.value;
+	let l = event.target.options[event.target.selectedIndex].innerHTML;
+	let apc = props.search.airport.code.toString(); 
+	props.requestFlights(apc, {type: v, label: l});
+	props.setSort(apc, { type: v, label: l });
+	props.dispatch(push('/filter/' + apc + '/' + v));
+}
 
-class Filter extends React.Component<SearchProps, SearchState.SearchState> {
-    public constructor(SearchProps: any) {
-        super(SearchProps)
-        this.props = SearchProps;
-        this.state = {
-            ...SearchProps
-        };
-        this.change = this.change.bind(this);
-    }
+const renderSortSelection = (props) => {
+	return <select id="sort"
+		ref="sortSelect"
+		onChange={(e) => changeSort(e, props)}
+		defaultValue={props.search.sort.type}
+		className="selectpicker"
+	>
+		<option value="departs">Sort by</option>
+		{props.search.sorts.map((sort) =>
+			<option key={sort.type} value={sort.type} >{sort.label}</option>
+		)};
+  </select>
+}
 
-    public componentWillMount() {
-        this.setAirportFromUrl(this.props);
-    }
+const renderTitleIntro = (name) => {
+	return <h2 className="airport">
+		Flights leaving {name}
+	</h2>
+}
 
-    public render() {
-        return <div className="msg-body">
-            <div className="msg-wrapper">
-                <div className="msg-inner">
-                    {this.renderTitleIntro()}
-                    {this.renderSortSelection()}
-                    <div className="grid">
-                        { this.renderFlights() }
-                    </div>
-                </div>
-            </div>
-        </div>;
-    }  
+class Filter extends React.Component<PropsType, ApplicationState> {
 
-    public change(event) {
-       this.props.requestFlights(this.props.airport.code.toString(), { type: event.target.value, label: event.target.options[event.target.selectedIndex].innerHTML });
-       this.props.setSort(this.props.airport.code.toString(), { type: event.target.value, label: event.target.options[event.target.selectedIndex].innerHTML })
-       this.render();
-    }
+	public componentDidMount() {
+		let apc = this.props.search.airport.code.toString();
+		let path = this.props.router.location.pathname;
+		this.props.setAirportFromUrl(
+			window.location.pathname, SearchState.actionCreators,
+		);
+		this.props.requestFlights(
+			this.props.search.airport.code,
+			this.props.search.sort
+		);
+	}
 
-    public setAirportFromUrl(props) {
-        if(!props.isLoading) {
-            let location = props.router.location.pathname;
-            let airportCode = location.split('/filter/')[1] ? location.split('/filter/')[1] : "ALL";
-            for(let ap in props.airports) {
-                if(props.airports[ap].code === airportCode) {
-                    props.setAirport({ code: props.airports[ap].code, name: props.airports[ap].name });
-                }
-            }
-            this.props.requestFlights(this.props.airport.code, { type: 'departing', label: 'Department'});  
-        }
-    }
+	componentWillReceiveProps(nextProps) {
+		if (this.props.search.airport.code !== nextProps.search.airport.code) {
+			let apc = this.props.search.airport.code.toString();
+			nextProps.dispatch(nextProps.setAirportFromUrl(
+				window.location.pathname, SearchState.actionCreators
+			));
+			nextProps.requestFlights(
+				nextProps.search.airport.code,
+				nextProps.search.sort
+			);
+		}
+	}
 
-    private renderTitleIntro() {
-        return <h2 className="airport">
-            Flights leaving { this.props.airport.name }
-        </h2>
-    }
+	private renderFlights() {
+		return <div className="flight">
+			{this.props.search.flights.map((flight) =>
+				<div key={flight.flightNumber + "/" + flight.from + "/" + flight.to} className="plan col-12 col-xs-12 col-sm-7 col-md-5 col-lg-5 col-xl-3">
+					<div className="title">{flight.flightNumber} {flight.from} to {flight.to}</div>
+					<div className="details">
+						<ul>
+							<li>Departs: {new Date(flight.departs).getHours() % 12 || 12}:{new Date(flight.departs).getMinutes() < 10 ? new Date(flight.departs).getMinutes() + "0" : new Date(flight.departs).getMinutes()} {new Date(flight.departs).getHours() > 11 ? "PM" : "AM"}</li>
+							<li>Arrives: {new Date(flight.arrives).getHours() % 12 || 12}:{new Date(flight.arrives).getMinutes() < 10 ? new Date(flight.arrives).getMinutes() + "0" : new Date(flight.arrives).getMinutes()} {new Date(flight.arrives).getHours() > 11 ? "PM" : "AM"}</li>
+							<li>Cabin: ${flight.mainCabinPrice}</li>
+							<li>First Class: ${flight.firstClassPrice}</li>
+						</ul>
+					</div>
+				</div>
+			)}
+		</div>
+	}
 
-    private renderSortSelection() {
-        return <select id="sort" ref="sortSelect" onChange={this.change} value={this.props.sort.type} className="selectpicker">
-            <option value="flightNumber">Sort by</option>
-            {this.props.sorts.map(sort =>
-                <option key={sort.type} value={sort.type} >{sort.label}</option>
-            )};
-        </select>
-    } 
-
-    private renderFlights() {
-        return <div className="flight">
-            {this.props.flights.map(flight =>
-                <div key={flight.flightNumber + "/" + flight.from + "/" + flight.to} className="plan col-xs-8 col-sm-4 col-md-3">
-                    <div className="title">{flight.flightNumber} {flight.from} to {flight.to}</div>
-                    <div className="details">
-                        <ul>
-                            <li>Departs: { new Date(flight.departs).getHours() % 12 || 12 }:{ new Date(flight.departs).getMinutes() < 10 ? new Date(flight.departs).getMinutes() + "0" : new Date(flight.departs).getMinutes() } { new Date(flight.departs).getHours() > 11 ? "PM" : "AM" }</li>
-                            <li>Arrives: { new Date(flight.arrives).getHours() % 12 || 12 }:{ new Date(flight.arrives).getMinutes() < 10 ? new Date(flight.arrives).getMinutes() + "0" : new Date(flight.arrives).getMinutes() } { new Date(flight.arrives).getHours() > 11 ? "PM" : "AM" }</li>
-                            <li>Cabin: ${flight.mainCabinPrice}</li>
-                            <li>First Class: ${flight.firstClassPrice}</li>
-                        </ul>
-                    </div>
-                </div>
-            )}
-        </div>
-    }
+	public render() {
+		return <div className="msg-body">
+			<div className="msg-wrapper">
+				<div className="msg-inner">
+					{renderTitleIntro(this.props.search.airport.name)}
+					{renderSortSelection(this.props)}
+					<div className="grid">
+						{this.renderFlights()}
+					</div>
+				</div>
+			</div>
+		</div>;
+	}
 }
 
 export default connect(
-    (state: ApplicationState) => state.search, // Selects which state properties are merged into the component's props
-    SearchState.actionCreators                 // Selects which action creators are merged into the component's props
+	(state) => state, // Selects which state properties are merged into the component's props
+	SearchState.actionCreators, // Selects which action creators are merged into the component's props
 )(Filter);

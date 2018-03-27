@@ -2,7 +2,9 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="react-app" asp-ng2-prerender-module="ClientApp/dist/main-server">Loading...</div>
+<div id="root" asp-prerender-module="ClientApp/dist/main-server">
+	<div id="react-app" data-reactroot="">Loading...</div>
+</div>
 
 @section scripts {
     <script src="~/dist/main-client.js" asp-append-version="true"></script>
