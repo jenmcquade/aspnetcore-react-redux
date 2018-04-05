@@ -4,7 +4,7 @@ ENV RUNTIME="Release"
 ENV ASPNETCORE_URLS="http://*:$PORT"
 WORKDIR /dotnetcorespa
 RUN ls -l
-CMD FlightSearch
+CMD /dotnetcorespa/FlightSearch
 
  
 
