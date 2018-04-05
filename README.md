@@ -1,10 +1,14 @@
 # **`aspnetcore-react-redux`**
 ## ASP.NET Core 2 MVC SPA boilerplate with JSON entpoints
 ### Hello from Jon in Tacoma, the toe of *SEA_TAC*, Zip \*\*404
+
 ***
+
 <img class="tacoma" src='https://upload.wikimedia.org/wikipedia/commons/e/ee/Tacoma_Dome.jpg' alt="Tacoma Dome" />
 <h4 align=center>#WeBuildThingsHere</h4>
+
 ***
+
 ## About this ASP .NET Core 2 SPA Template
 ### This project builds from the `src` directory.
 * *Dockerized Boilerplate* for *C# ASP .NET Core 2.1 MVC SPA* development, with Isomorphic React and Redux server and client-side rendering of React Components.
