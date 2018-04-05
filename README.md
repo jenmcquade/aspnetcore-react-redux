@@ -38,15 +38,15 @@
 
 ## Up and Running
 ***
-##### **The easiest way to get started** is to install `docker` on your machine.  Once installed, run this `command` inside of the project's **src** directory:<br>
-* `docker-compose up`
+##### **The easiest way to get started** is to install `docker` on your machine.  Once installed, run this `command` inside of the project's **root (.)** directory:<br>
+* `docker-compose -f docker-compose.dev.yml up`
 * This will download the latest (:dev) build and create a container. `npm install`, as well as `webpack` packaging are initiated automatically before the server starts.
 
 ##### When initial site caching has completed, open `http://localhost:8080` in your browser.
 
 #### What happens when I run this?
 * *Docker Compose* is configured to pull a Dockerhub image to your machine named  **`jonmcquade/aspnetcore-react-redux`** with the **`:dev`** tag. 
-* You can also build your own version of the image using `docker-compose build` in the src directory. 
+* You can also build your own version of the image using `docker-compose -f docker-compose.dev.yml build` in the project root (.) directory. 
 * Docker Compose passes build arguments to the *Dockerfile* build configuration to create a (:dev) tagged image.  `dotnet restore` is run during the build to pull down project dependencies.  When the container runs, the entrypoint script is executed, then runs `npm install` and `webpack` commands inside the container to generate static site files.
 * Docker Compose runs the image in a **container**, mapping the host's `8080` port to the container's `3000` port.
 * The host's `./src` folder is mapped to the container's `/dotnetcorespa` directory using shared volumes.   
@@ -55,22 +55,18 @@
 #### Docker: To run a Production build and publish a self-contained executable
 * [Install Docker](https://docs.docker.com/install/]https://docs.docker.com/install)
 * Run the `command` below in the project (".") directory to publish a Production build of your app:
-* `docker-compose up`
+* `docker-compose build`
 * The `Dockerfile` builds a base image of **`jonmcquade/aspnetcore-react-redux`** with a tag of **`latest`**.  This image is much smaller than the **`:dev`** tag because it does not include the *.NET Core 2 SDK*. A standalone *Production* build only requires the *.NET Core 2 Runtime Dependency libraries*.
-
-While the container is running, run:
-* `docker exec aspnetcore-react-redux dotnet -c Release publish -o /app` to publish the app inside the Docker container
-* `docker cp aspnetcore-react-redux:/app ./app` to copy the published self-contained executable to your local host. 
 
 ***
 ##### Note
-*Docker Compose* creates a container named `aspnetcore-react-redux`.  You can run `docker exec -ti aspnetcore-react-redux shell` to enter an interactive terminal into the running *Docker Container* that *Docker Compose* started.  This way, you can run your commands directly in the Docker container without needing to run docker clr commands from your host.
+*`docker-compose -f docker-compose.dev.yml up`* creates a container named **aspnetcore-react-redux-dev**.  You can run `docker exec -ti aspnetcore-react-redux-dev shell` to enter an interactive terminal into the running *Docker Container* that *Docker Compose* started.  This way, you can run your shell commands directly in the Docker container, without needing to wrap your commands in the docker clr from your host.
 *** 
 
 ## To develop locally without using Docker
 ***
 ##### Note
-###### This app targets the **.NET Core 2.1 Runtime**.  This was decided due to the recent release of *.NET Core 2.1 SDK* and Runtimes using Docker images under **Linux Alpine** with an **AMD 64-bit CPU**. *Apline* produces much smaller builds.
+###### This app targets the **.NET Core 2.1 Runtime**.  This was decided as a requirement due to the recent release of *.NET Core 2.1 SDK* and Runtimes using Docker images under **Linux Alpine** with an **AMD 64-bit CPU**. *Linux Apline* produces much smaller builds, which is perfect for microservice and SPA development.
 ***
 ##### Requirements for local development
 * [NodeJS 8](https://nodejs.org/en/download/) with NPM 5
@@ -79,11 +75,11 @@ While the container is running, run:
 *** 
 * [Visual Studio 2017 Preview](https://www.visualstudio.com/vs/preview) with **"ASP.NET and web development"** selected in the Visual Studio Installer. 
 ##### Why the Preview release?
-* The Preview version includes the *.NET Core 2.1 SDK and Runtime*.  **Depending on your version of Visual Studio, you might not be able to target `.NET Core 2.1 Runtime` inside the IDE yet**.  
+* The Preview version includes the *.NET Core 2.1 SDK and Runtime*.  **Depending on your version of Visual Studio, you might not be able to target `.NET Core 2.1 Runtime` inside the IDE yet**.    
 * You can modify the `global.json` project file to target a previous version of the .NET Core 2 runtime, such as the more-supported 2.0.  2.1 is a project requirement for Docker support, not for running or building locally. 
 ***
 
-## To build or publish locally
+## Tools for building or publishing locally
 ### Requirements
 **Visual Studio Community** and also [VS Code](https://code.visualstudio.com) are free to download. **These downloads are not required if using Docker**.
 * [.NET Core 2 SDK 2.1.300-preview1-008174](https://www.microsoft.com/net/download/linux-package-manager/ubuntu17-10/sdk-2.1.300-preview1) if you're not installing *Visual Studio 2017 Preview*
@@ -98,7 +94,7 @@ While the container is running, run:
 ##### Development 
 * `$ dotnet restore`
 * `$ npm install`
-* `$ webpack --mode=development --config="webpack.config.vendor"`
+* `$ webpack --mode=development --config="webpack.config.vendor.js"`
 * `$ webpack --mode=development`
 * `$ dotnet run`
 
@@ -110,5 +106,6 @@ While the container is running, run:
 
 ***
 ##### Note about using **Visual Studio** 
-You can also run a build from within Visual Studio using the Build and Debug menus. However, you will still need to manually run NPM and Webpack commands in order to generate the cacheable/static files for the SPA (see above commands). You may also get errors for not being able to target the `.NET Core 2.1` runtime.
+You can also run a build from within Visual Studio using the Build and Debug menus. Due to some .NET Core 2.1 features still existing in Preview releases, you may see errors in the IDE console/output window, for not being able to target the `.NET Core 2.1` runtime.
+
 ***
