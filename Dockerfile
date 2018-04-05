@@ -1,5 +1,5 @@
 # Image 1: Begin with nightly SDK image that contains a build of the solution
-FROM jonmcquade/dotnetcore-runtime-sdk-node-python AS build
+FROM jonmcquade/dotnetcore-runtime-sdk-node-python:dotnetcore-asp AS build
 ARG aspenv="Production"
 ENV ASPNETCORE_ENVIRONMENT $aspenv 
 ARG runtime="Release"
