@@ -1,0 +1,10 @@
+FROM jonmcquade/aspnetcore-react-redux:latest
+ENV ASPNETCORE_ENVIRONMENT Production
+ENV RUNTIME="Release"
+ASPNETCORE_URLS="http://*:$PORT;https://*:$PORT"
+WORKDIR /dotnetcorespa
+RUN ls -l
+CMD FlightSearch
+
+ 
+

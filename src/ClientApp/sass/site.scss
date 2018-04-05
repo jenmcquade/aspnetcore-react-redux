@@ -1,0 +1,313 @@
+[data-reactroot] {
+    min-height: 100% !important;
+    position: absolute;
+    min-width: 100% !important;
+    padding: 0px;
+    margin: 0px;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	background: url("/dist/plane.svg") fixed no-repeat top left;
+	background-size: 100%, 100%;
+}
+
+pre code {
+	background-color: #eee;
+	border: 1px solid #999;
+	display: block;
+	padding: 20px;
+}
+
+#root {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+#App {
+	min-height: 100%;
+	min-width: 100%;
+}
+
+.row > [class*='col-'] {
+	display: flex;
+	flex-direction: column;
+}
+
+.btn-primary {
+	background-color:#4189C7; 
+}
+
+#App .container-fluid {
+	min-height: 100%;
+	min-width: 100%;
+	display: flex;
+	padding: 0;
+
+	.container {
+		display: table;
+		min-width: 100%;
+		min-height: 100%;
+		margin-top: -50px;
+		padding: 50px 0 0 0; /*set left/right padding according to needs*/
+		box-sizing: border-box;
+	}
+
+	.row {
+		min-height: 100%;
+		min-width: 100%;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+
+		.no-float {
+			display: inline-table;
+			float: none;
+		}
+	}
+
+	.app-logo {
+		background: url("/dist/plane.svg") no-repeat;
+		background-size: contain;
+		fill: white;
+		color: white;
+		height: 5em;
+		margin: 0 25%;
+	}
+}
+
+#contextNav, #contextBody {
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+	min-height: 100%;
+
+	section {
+		height: 100%;
+		background: rgba(255,255,255,.9);
+
+		.msg-body {
+			padding: 2em;
+			margin: 0px;
+			display: table;
+			width: 100%;
+			height: 100vh !important;
+
+			.msg-inner {
+				padding-bottom: 5em;
+			}
+		}
+
+		.msg-wrapper {
+			padding: 0px;
+			margin: 0px;
+			display: table-cell;
+			vertical-align: middle;
+		}
+
+		.msg-inner {
+			margin-left: auto;
+			margin-right: auto;
+			width: 100%;
+		}
+	}
+}
+
+.navbar-inverse {
+    min-height: 100%;
+    background-color: #01426a;
+	align-content: baseline;
+
+    .navbar-brand {
+        text-shadow: 1px 1px 5px rgba(12,0,0,.4);
+    }
+
+    .navbar-nav > li > a {
+        color: white;
+    }
+
+    .navbar-nav > li > a:hover {
+        color: white;
+        text-shadow: 1px 1px 5px rgba(12,0,0,.4);
+    }
+}
+
+.main-nav {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	position: fixed;
+
+	.navbar-header {
+		width: 100%;
+
+		a {
+			width: 100%;
+		}
+	}
+
+	li {
+
+		a.active,
+		a.active:hover,
+		a.active:focus {
+			text-shadow: 1px 1px 5px rgba(12,0,0,.4);
+			background-color: #4189C7;
+			color: black !important;
+		}
+
+		.glyphicon {
+			text-shadow: 1px 1px 5px rgba(12,0,0,.4);
+			margin-right: 10px;
+		}
+	}
+
+
+}
+
+
+.grid {
+	display: flex;
+    .plan {
+        .title {
+            font-weight: bold;
+        }
+        border-radius: 25px;
+        border-color: #333;
+        border-style: solid;
+        border-width: 1px;
+        -webkit-box-shadow: 5px 5px 25px -12px rgba(0,0,0,0.75);
+        -moz-box-shadow: 5px 5px 25px -12px rgba(0,0,0,0.75);
+        box-shadow: 5px 5px 25px -12px rgba(0,0,0,0.75);
+    }
+	.flight {
+		text-align: center;
+	}
+	.flight .plan{
+		text-align: left;
+		background:rgba(255,255,255,0.8);
+		display: inline-grid;
+		padding: 1em;
+		margin: 1em;
+	}
+}
+
+
+
+.element-item-sizer {
+   margin: 0px;
+   padding: 0px;
+}
+
+.airport {
+	text-align: center;
+}
+
+#sort {
+	margin: 0% 25%;
+	padding: 1em;
+	width: 50%;
+}
+
+.tacoma {
+	width: 50%;
+	margin: 0 25%;
+	border: 2px outset black;
+	box-shadow: 5px 10px #888888;
+}
+
+@media (max-width: 400px) {
+	h1, h2 {
+		font-size: 0.7em;
+	}
+	.main-nav .navbar-header {
+		display: none;
+	}
+
+	.flight .plan {
+		padding: 0em !important;
+		margin: 1em 0 !important;
+	}
+	.flight .plan {
+		background: none !important;
+		display: inline-grid;
+		padding: 1%;
+		border: unset;
+		box-shadow: none;
+		border-radius: 0;
+	}
+
+}
+
+@media (max-width: 767px) {
+
+    body {
+        padding-top: 0px;
+    }
+	.app-logo {
+		margin-left: 1%;
+	}
+    .navbar-brand {
+        margin-top: 20px;
+    }
+    .grid {
+        .plan {
+            padding: 2%;
+            margin: 2% 15%;
+        }
+    }
+	.flight .plan {
+		background: rgba(255,255,255,0.9);
+		display: inline-grid;
+		padding: 1%;
+	}
+}
+
+@media (min-width: 768px) {
+
+    .main-nav .navbar-header {
+        float: none;
+    }
+
+    .main-nav .navbar-collapse {
+        border-top: 1px solid #444;
+        padding: 0px;
+    }
+
+    .main-nav .navbar ul {
+        float: none;
+    }
+
+    .main-nav .navbar li {
+        float: none;
+        font-size: 15px;
+        margin: 6px;
+    }
+
+    .main-nav .navbar li a {
+        padding: 10px 16px;
+        border-radius: 4px;
+    }
+
+	.navbar-brand {
+		width: 50%;
+	}
+
+    .main-nav .navbar a {
+        /* If a menu item's text is too long, truncate it */
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+@media (min-width: 1555px) {
+	.app-logo {
+		width: 8em !important;
+		height: 8em !important;
+	}
+}

@@ -1,0 +1,31 @@
+version: '3.2'
+      
+services:
+  
+  flightsearch:
+    container_name: aspnetcore-react-redux-dev
+    image: jonmcquade/aspnetcore-react-redux:dev
+    restart: on-failure:5
+    build: 
+      context: ./src
+      dockerfile: Dockerfile
+      args:
+        port: 3000             
+        sslPort: 3001
+        runtime: Release #Release gives us logs
+    volumes:
+      - ./src:/dotnetcorespa
+      - ./src/entrypoint:/entrypoint  
+      - ./README.md:/README.md
+      - logs:/dotnetcorespa/logs
+    environment:
+      - "PORT=3000"
+      - "SSL_PORT=3001"
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_URLS=http://*:3000;https://*:3001"
+    ports:
+     - "8080:3000"
+     - "8443:3001"
+
+volumes:
+  logs:
