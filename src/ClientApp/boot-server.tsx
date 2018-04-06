@@ -8,7 +8,6 @@ import { AppContainer } from 'react-hot-loader';
 import { createMemoryHistory } from 'history';
 import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
 import { fetch, addTask } from 'domain-task';
-
 import Routes, { PropsType } from './components/Routes';
 import configureStore from './configureStore';
 import * as StateModule from './store';

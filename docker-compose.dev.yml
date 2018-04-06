@@ -21,11 +21,11 @@ services:
     environment:
       - "PORT=3000"
       - "SSL_PORT=3001"
-      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "ASPNETCORE_ENVIRONMENT=Docker"
       - "ASPNETCORE_URLS=http://*:3000;https://*:3001"
     ports:
-     - "8080:3000"
-     - "8443:3001"
+     - "3000:3000"
+     - "3001:3001"
 
 volumes:
   logs:
