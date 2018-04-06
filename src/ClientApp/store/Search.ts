@@ -104,8 +104,7 @@ export const actionCreators = {
 		}
 	},
 	requestAirports: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
-		let port = process.env.PORT ? ":" + process.env.PORT : ":80";
-		let fetchTask = fetch(`http://0.0.0.0` + port + `/api/search/airports`)
+		let fetchTask = fetch(`/api/search/airports`)
         .then(response => response.json() as Promise<Airport[]>)
         .then(data => {
             dispatch({ type: 'RECEIVE_AIRPORT_SEARCH', airports: data });
