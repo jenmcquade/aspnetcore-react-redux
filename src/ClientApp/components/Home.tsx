@@ -6,7 +6,7 @@ export default class Home extends React.Component {
         return <div className="msg-body">
             <div className="msg-wrapper">
                 <div className="msg-inner">
-                    <h1>Finds Your Connections</h1>
+                    <h1>Find Your Connections</h1>
                     <Link className='btn btn-lg btn-primary' to={'/airport'}>Begin Search</Link>
                 </div>
             </div>
