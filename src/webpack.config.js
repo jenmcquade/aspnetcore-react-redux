@@ -97,7 +97,7 @@ module.exports = (env) => {
 					}
 				},
 				{
-					test: /(eot|woff|woff2|ttf|png|jpe?g|gif)(\?\S*)?$/,
+					test: /(eot|ico|woff|woff2|ttf|png|jpe?g|gif)(\?\S*)?$/,
 					use: {
 						loader: 'file-loader',
 						options: { name: '[name].[ext]', limit: 10000 } //?limit=100000'

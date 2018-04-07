@@ -16,6 +16,7 @@ import { AppThunkAction } from './store';
 import * as SearchState from './store/Search';
 import * as AboutState from './store/About';
 import './sass/site.scss';
+import './favicon.ico';
 const readmePath = require("../../README.md");
 
 export default createServerRenderer(params => {
