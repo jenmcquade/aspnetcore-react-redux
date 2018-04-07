@@ -13,11 +13,11 @@
 ### This project builds from the `src` directory.
 * *Dockerized Boilerplate* for *C# ASP .NET Core 2.1 MVC SPA* development, with Isomorphic React and Redux server and client-side rendering of React Components.
 * Develop, debug, build, publish and release **.NET Core 2.1 ASP .NET** apps without installing .NET locally, using pre-built Docker images running Linux Alpine.  
-* This `README.md` file is dynamically loaded into the `src/ClientApp/components/About` component as a demonstration of a simple no-db CMS. When debugging locally in Development, you can access this same README within the app at **http://localhost:5000/about**.  Using `docker-compose up` in the src directory, it can be accessed at **http://localhost:8080/about**.
+* This `README.md` file is dynamically loaded into the `src/ClientApp/components/About` component as a demonstration of a simple no-db CMS. When debugging locally in Development, you can access this same README within the app at **http://localhost:5000/about**.  Using `docker-compose -f docker-compose.dev.yml up` in the root directory, it can be accessed at **http://localhost:8080/about**.
 * **Library dependencies** are the freshest versions as of 3/13/2018, including *Microsoft .NET Core Runtime 2.1.0 Preview1* and *aspnetcore2.1* targeting, with up-to-date and alpha *package.json* references.
 * **API and microservices examples**: Demonstration of *CSV* to *ASP.NET Controller* conversion, with JSON API for file I/O, seperate from the UI.  
 * Demonstration of isomorphic design using ASP .NET Prerendering of React, Redux and React Router
-* **Bootstrap 4** and **Webpack 4** compatible frontend with **React Hot Module Replacement** when running locally.  State is maintained between routes, inside of the Redux store.  **HMR using Docker is not yet resolved: file changes do not trigger a build.**
+* **Bootstrap 4** and **Webpack 4** compatible frontend with **React Hot Module Replacement** when running locally.  State is maintained between routes, inside of the Redux store.  **HMR using Docker is not yet resolved: file changes do not trigger a Webpack build.**
 * **ActionScript** is moderately implemented, as to not scare off junior developers.
 
 ### Project History
@@ -33,7 +33,7 @@
 * [Font Awesome](https://fontawesome.com) for font imports
 * [Bootstrap 4](http://getbootstrap.com/)  for layout and styling
 * [Sass](https://sass-lang.com/install]) to transpile vendor and this app's CSS
-* [Docker](https://docs.docker.com/engine/installation/) for release management and local debugging
+* [Docker](https://docs.docker.com/engine/installation/) for release management and local debugging.  **Linux containers are used with this project.** If you are using Windows containers with Docker for Windows, right click on the Docker Context Menu in the Start Menu, and select *Switch to Linux Containers...*  
 * Environment configurations for *Production* and *Development*, including configurations for `dotnet restore`, `dotnet build` and `dotnet publish` both locally and through Docker.  Distribution bundles are handled independently, allowing you to build a Debug or a Release .dll or standalone app, with dynamic hosting configurations included for Heroku port management.
 
 ## Up and Running
@@ -90,12 +90,12 @@
 * Run `dotnet publish -c Release -o ./app` to publish to the *./app* directory.  This performs `npm install` and `webpack` operations for you. 
 
 ### To run using locally installed .Net Core 2.1 SDK tools (without Docker):
-#### Inside the *.src* directory: <br>
+#### Inside the `*.src*` directory: <br>
 ##### Development 
 * `$ dotnet restore`
 * `$ npm install`
-* `$ webpack --mode=development --config="webpack.config.vendor.js"`
-* `$ webpack --mode=development`
+* `$ webpack --mode development --config="webpack.config.vendor.js"`
+* `$ webpack --mode development`
 * `$ dotnet run`
 
 ##### To debug a Release build locally from the *.src* directory
