@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
     <AssemblyName>FlightSearch</AssemblyName>
     <RootNamespace>FlightSearch</RootNamespace>
-    <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
+    <ApplicationIcon>ClientApp\favicon.ico</ApplicationIcon>
     <StartupObject></StartupObject>
     <Authors>Jon McQuade</Authors>
     <Company>ACME Freelancing, Inc.</Company>
