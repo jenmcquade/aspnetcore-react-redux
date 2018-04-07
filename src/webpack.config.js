@@ -97,11 +97,15 @@ module.exports = (env) => {
 					}
 				},
 				{
-					test: /(eot|ico|woff|woff2|ttf|png|jpe?g|gif)(\?\S*)?$/,
+					test: /(eot|woff|woff2|ttf|png|jpe?g|gif)(\?\S*)?$/,
 					use: {
 						loader: 'file-loader',
-						options: { name: '[name].[ext]', limit: 10000 } //?limit=100000'
+						options: { name: '[name].[ext]' } //?limit=100000'
 					}
+				},
+				{
+					test: /\.ico$/,
+					loader: 'file-loader?name=[name].[ext]',
 				},
 				{
 					test: /\.svg/,
@@ -218,7 +222,15 @@ module.exports = (env) => {
 						loader: 'file-loader',
 						options: { name: '[name].[ext]', limit: 10000 } //?limit=100000'
 					}
-				}
+				},
+				{
+					test: /favicon\.ico$/,
+					loader: 'file-loader',
+					query: { 
+						limit: 1,
+						name: '[name].[ext]',
+					},
+				},
 			]
 		},
 		plugins: [
