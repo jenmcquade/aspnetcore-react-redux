@@ -18,7 +18,7 @@
     <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
     <OutputType>Exe</OutputType>
     <Version>2.1</Version>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Optimize>true</Optimize>

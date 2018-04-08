@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  flightsearch:
-    image: ${DOCKER_REGISTRY}flightsearch
-    build:
-      context: .
-      dockerfile: Dockerfile
