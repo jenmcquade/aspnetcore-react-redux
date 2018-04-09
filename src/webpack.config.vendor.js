@@ -15,12 +15,6 @@ module.exports = (env) => {
 
 	const sharedConfig = {
 		stats: { modules: false },
-		resolve: {
-			alias: {
-				'masonry': 'masonry-layout',
-				'isotope': 'isotope-layout'
-			}
-		},
 		module: {
 			rules: [
 				{
@@ -70,7 +64,6 @@ module.exports = (env) => {
 				'event-source-polyfill',
 				'history',
 				'jquery',
-				'isotope-layout',
 				'react',
 				'react-dom',
 				'react-router',

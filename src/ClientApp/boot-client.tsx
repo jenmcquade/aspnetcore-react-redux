@@ -16,6 +16,7 @@ import Routes, { PropsType } from './components/Routes';
 import { loadPolyfill } from './loadPolyfill';
 import './dist/bootstrap.css';
 import './sass/site.scss';
+import './favicon.ico';
 const readmePath = require("../../README.md");
 
 function main() {

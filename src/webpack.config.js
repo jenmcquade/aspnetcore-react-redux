@@ -104,8 +104,12 @@ module.exports = (env) => {
 					}
 				},
 				{
-					test: /\.ico$/,
-					loader: 'file-loader?name=[name].[ext]',
+					test: /favicon\.ico$/,
+					loader: 'file-loader',
+					query: { 
+						limit: 1,
+						name: '[name].[ext]',
+					},
 				},
 				{
 					test: /\.svg/,
