@@ -8,6 +8,11 @@
 <h4 align=center>#WeBuildThingsHere</h4>
 
 ***
+
+## YouTube Guides (In Progress)
+
+[![Installation Guide](https://img.youtube.com/vi/kUePoOVKkbU/0.jpg)](https://www.youtube.com/watch?v=kUePoOVKkbU&t=1s&list=PL2GeakHgUYU8vf59dJ50zjPq6gbV9C27R&index=1)
+
 ## Table of Contents
 * [About this Template](#about)
 * [Project history](#history)
