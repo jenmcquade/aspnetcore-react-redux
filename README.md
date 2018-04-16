@@ -9,6 +9,11 @@
 
 ***
 
+## Docker Tags
+https://hub.docker.com/r/jonmcquade/aspnetcore-react-redux/tags/
+* :dev builds have all the tools needed to debug and build your projects
+* :latest builds are production builds used by Heroku for http://dotnetcore-flightsearch.herokuapp.com/
+
 ## YouTube Guides (In Progress)
 
 [![Installation Guide](https://img.youtube.com/vi/kUePoOVKkbU/0.jpg)](https://www.youtube.com/watch?v=kUePoOVKkbU&t=1s&list=PL2GeakHgUYU8vf59dJ50zjPq6gbV9C27R&index=1)
