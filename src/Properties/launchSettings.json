@@ -2,22 +2,29 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
-    "iis": {
-      "applicationUrl": "http://localhost/flightsearch",
-      "sslPort": 0
-    },
     "iisExpress": {
-      "applicationUrl": "http://0.0.0.0:3000",
-      "sslPort": 3001
+      "applicationUrl": "http://localhost:55758/",
+      "sslPort": 44337
     }
   },
   "profiles": {
-    "IIS Express": {
+    "IISExpress": {
       "commandName": "IISExpress",
-      "launchBrowser": true
+      "launchBrowser": true,
+      "environmentVariables": {
+        "SSL_PORT": "44337",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PORT": "55758"
+      }
     },
     "FlightSearch": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production",
+        "PORT": "5000"
+      },
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }
