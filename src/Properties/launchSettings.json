@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/flightsearch",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://0.0.0.0:3000",
       "sslPort": 3001
@@ -9,7 +13,8 @@
   },
   "profiles": {
     "IIS Express": {
-      "commandName": "IISExpress"
+      "commandName": "IISExpress",
+      "launchBrowser": true
     },
     "FlightSearch": {
       "commandName": "Project"
