@@ -16,8 +16,8 @@ namespace flightsearch
         public static void Main(string[] args)
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
-            string port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-            string sslPort = Environment.GetEnvironmentVariable("SSL_PORT") ?? "5001";
+            string port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
+            string sslPort = Environment.GetEnvironmentVariable("SSL_PORT") ?? "3001";
 			int portId = Convert.ToInt32(port);
 			int sslPortId = Convert.ToInt32(sslPort);
 

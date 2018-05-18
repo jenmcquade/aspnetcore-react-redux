@@ -14,10 +14,10 @@ cat /dotnetcorespa/Properties/launchSettings.json
 cat /dotnetcorespa/appsettings.json
 ## Create server configurations from .tpl files
 cd /dotnetcorespa/tpl
-sed -i "s/5000/${PORT}/g" launchSettings-local.json 
-sed -i "s/5001/${SSL_PORT}/g" launchSettings-local.json
-sed -i "s/5000/${PORT}/g" appsettings-local.json 
-sed -i "s/5001/${SSL_PORT}/g" appsettings-local.json
+sed -i "s/3000/${PORT}/g" launchSettings-local.json 
+sed -i "s/3001/${SSL_PORT}/g" launchSettings-local.json
+sed -i "s/3000/${PORT}/g" appsettings-local.json 
+sed -i "s/3001/${SSL_PORT}/g" appsettings-local.json
 cp launchSettings-local.json /dotnetcorespa/Properties/launchSettings.json
 cp appsettings-local.json /dotnetcorespa/appsettings.json
 echo "Node Version: " && node -v
@@ -29,11 +29,6 @@ sed -i "s/\"Microsoft\": \"Information\"/\"Microsoft\": \"Debug\"/g" ./appsettin
 echo ".NET SDK Version: " && dotnet --version
 echo -e "\n\n\n... Installing node project dependencies..."
 npm config set package-lock false
-# node-sass installations on local can cause CPU mismatch, 
-#   so we remove it before moving forward
-if [ -d node_modules/node-sass ]; then
-    npm uninstall node-sass
-fi 
 npm install
 echo -e "\n\n\n... Starting the server..." 
 dotnet run -c Debug -r alpine.3.6-x64

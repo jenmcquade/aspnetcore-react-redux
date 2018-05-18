@@ -64,5 +64,5 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ARG serverUrls="http://*:$PORT;https://*:$SSL_PORT"
 ENV ASPNETCORE_URLS $serverUrls
-EXPOSE 5000 5001 $port $sslPort
+EXPOSE 3000 3001 $port $sslPort
 CMD /dotnetcorespa/FlightSearch
