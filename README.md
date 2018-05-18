@@ -106,31 +106,25 @@ You don't have to debug or build from the Visual Studio IDE.  The `dotnet` CLR i
 ***
 
 <a name="using-vs-preview">
-#### Why the Preview release of Visual Studio?
-* The Preview version includes the ability to **target** the *.NET Core 2.1 SDK and Runtime* from within the IDE.  **However, you'll still need to install a newer version of the SDK in order to debug or build**. Depending on your version of Visual Studio, you might not be able to target `.NET Core 2.1 Runtime` inside the IDE yet.  In addition to targeting the framework, the framework must be installed locally when not using Docker.    
-* You can modify the `global.json` and `flightsearch.csproj` project files to target a previous version of the .NET Core 2 runtime, such as the more-supported 2.0.  2.1 is a project requirement for Docker support, not for running or building locally.  Changing the runtime version can cause undesired affects, has not been tested, and won't be supported at this time.
-* You can also run a build from within Visual Studio using the Build and Debug menus. Due to some .NET Core 2.1 features still existing in Preview releases, you may see errors in the IDE console/output window about not being able to target the `.NET Core 2.1` runtime.  **Visual Studio 2017 Preview** has resolved issues with targeting the .NET Core 2.1 runtime. 
-***
+
 <a name="commands"></a>
+
 ### Commands
+
+#### For Development 
+* `npm install` from the `src` directory will run a dotnet restore as well as run webpack to create all required file resources.
+* `npm start` from the `src` directory will start a local instance of the Web app
+
+#### For Building and Publishing
 * Run `dotnet build -c Release -o ./app` to build the .NET libraries.  This does not run `npm install` or `webpack` operations.
 * Run `dotnet publish -c Release -o ./app` to publish to the *./app* directory.  This performs `npm install` and `webpack` operations for you. 
 
-### To run using locally installed .Net Core 2.1 SDK tools (without Docker):
-#### Inside the `.src` directory: 
-
-#### Development 
-* `dotnet restore`
-* `npm install`
-* `webpack --mode development --config="webpack.config.vendor.js"`
-* `webpack --mode development`
-* `dotnet run`
-
-#### Release
-
-##### To debug a Release build locally from the *.src* directory
-* `dotnet publish -c Release`
-* `dotnet run`
-
 ##### The application will be available http://localhost:5000 
+
+#### Why the Preview release of Visual Studio?
+
+* The Preview version includes the ability to **target** the *.NET Core 2.1 SDK and Runtime* from within the IDE.  **However, you'll still need to install a newer version of the SDK in order to debug or build**. Depending on your version of Visual Studio, you might not be able to target `.NET Core 2.1 Runtime` inside the IDE yet.  In addition to targeting the framework, the framework must be installed locally when not using Docker.    
+* You can modify the `global.json` and `flightsearch.csproj` project files to target a previous version of the .NET Core 2 runtime, such as the more-supported 2.0.  2.1 is a project requirement for Docker support, not for running or building locally.  Changing the runtime version can cause undesired affects, has not been tested, and won't be supported at this time.
+* You can also run a build from within Visual Studio using the Build and Debug menus. Due to some .NET Core 2.1 features still existing in Preview releases, you may see errors in the IDE console/output window about not being able to target the `.NET Core 2.1` runtime.  **Visual Studio 2017 Preview** has resolved issues with targeting the .NET Core 2.1 runtime. 
+
 

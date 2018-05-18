@@ -35,9 +35,6 @@ if [ -d node_modules/node-sass ]; then
     npm uninstall node-sass
 fi 
 npm install
-echo -e "\n\n\n... Packaging static files to server..."  
-node node_modules/webpack/bin/webpack.js --mode development --config webpack.config.vendor.js --display detailed  
-node node_modules/webpack/bin/webpack.js --mode development --config webpack.config.js --display detailed  
 echo -e "\n\n\n... Starting the server..." 
 dotnet run -c Debug -r alpine.3.6-x64
 
