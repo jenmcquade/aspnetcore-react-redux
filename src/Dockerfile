@@ -10,8 +10,8 @@ ARG runtime="Release"
 ENV RUNTIME $runtime
 ENV DOTNET_SKIP_FIRST_TIME_EXPERIENCE true
 COPY ./entrypoint /
-COPY ./tpl /tpl
-RUN npm install \
+COPY ./ .
+RUN cd /dotnetcorespa && npm install \
   && dotnet restore 
 ARG serverUrls="http://*:$PORT;https://*:$SSL_PORT"
 ENV ASPNETCORE_URLS $serverUrls

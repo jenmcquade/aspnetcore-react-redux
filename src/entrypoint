@@ -30,6 +30,8 @@ echo ".NET SDK Version: " && dotnet --version
 echo -e "\n\n\n... Installing node project dependencies..."
 npm config set package-lock false
 npm install
+npm run wp-vendor 
+npm run wp
 echo -e "\n\n\n... Starting the server..." 
 dotnet run -c Debug -r alpine.3.6-x64
 
