@@ -35,12 +35,13 @@
     "scripts": {
         "wp-vendor": "node node_modules/webpack/bin/webpack.js --mode development --config webpack.config.vendor.js --display detailed",
         "wp": "node node_modules/webpack/bin/webpack.js --mode development --config webpack.config.js --display detailed",
-        "wp-vendor-prod": "node node_modules/webpack/bin/webpack.js --mode production --config webpack.config.vendor.js --display detailed",
-        "wp-prod": "node node_modules/webpack/bin/webpack.js --mode production--config webpack.config.js --display detailed",
-        "install": "dotnet restore . && npm run wp-vendor && npm run wp",
+        "wp-vendor-prod": "node node_modules/webpack/bin/webpack.js --mode production --config webpack.config.vendor.js",
+        "wp-prod": "node node_modules/webpack/bin/webpack.js --mode production --config webpack.config.js",
+        "install": "dotnet restore && npm run wp-vendor && npm run wp",
         "publish": "dotnet publish -o /app/dist",
         "build": "dotnet build -v $VERBOSITY -o /app",
-        "start": "dotnet run"
+        "start": "npm run wp-vendor && npm run wp && dotnet run -c Debug",
+        "prod": "npm run wp-vendor-prod &&npm run wp-prod && dotnet run -c Release"
     },
     "version": "2.1.0",
     "dependencies": {

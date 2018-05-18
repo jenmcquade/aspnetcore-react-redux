@@ -20,6 +20,7 @@ https://hub.docker.com/r/jonmcquade/aspnetcore-react-redux/tags/
 
 ## Table of Contents
 * [About this Template](#about)
+* [NPM Automation Scripts](#scripts)
 * [Project history](#history)
 * [What's in the box?](#tools)
 * [Up and Running using Docker](#quickstart)
@@ -39,6 +40,21 @@ https://hub.docker.com/r/jonmcquade/aspnetcore-react-redux/tags/
 * Demonstration of isomorphic design using ASP .NET Prerendering of React, Redux and React Router
 * **Bootstrap 4** and **Webpack 4** compatible frontend with **React Hot Module Replacement** when running locally.  State is maintained between routes, inside of the Redux store.  **HMR using Docker is not yet resolved: file changes do not trigger a Webpack build.**
 * **ActionScript** is moderately implemented, as to not scare off junior developers.
+
+<a name="scripts"></a>
+### NPM Automation Scripts
+
+| File          | Command                     | Environment    | Affect|
+| ------------- |:---------------------------:|:--------------:| -----:|
+| package.json  | `npm run wp-vendor`         | Dev            | Runs Webpack on vendor files |
+| package.json  | `npm run wp`                | Dev            | Runs Webpack on ClientApp files |
+| package.json  | `npm run wp-vendor-prod`    | Prod           | Runs Webpack on vendor files |
+| package.json  | `npm run wp-prod`           | Prod           | Runs Webpack on ClientApp files |
+| package.json  | `npm install`               | Dev            | Runs `dotnet restore` then runs Webpack |
+| package.json  | `npm publish`               | Prod           | Runs `dotnet publish` in Release mode |
+| package.json  | `npm build`                 | Prod           | Runs `dotnet build` in Release mode |
+| package.json  | `npm start`                 | Dev            | Runs Webpack then `runs dotnet run` in Debug mode |
+| package.json  | `npm run prod`              | Prod           | Runs Webpack then `runs dotnet run` in Release mode |
 
 <a name="history"></a>
 ### Project History
@@ -93,6 +109,7 @@ https://hub.docker.com/r/jonmcquade/aspnetcore-react-redux/tags/
 <a name="local-no-docker-requirements"></a>
 #### Requirements for local development
 * [NodeJS 8.11](https://nodejs.org/en/download/) with NPM 5.6
+* **IMPORTANT!** [Add a reference to your local NodeJS installation](https://stackoverflow.com/questions/43849585/update-node-version-in-visual-studio-2017) inside Visual Studio *Tools>Options>Projects and Solutions>Web Package Management>External Web Tools* 
 * [Webpack 4](https://webpack.js.org/)
 * **For editing files**: **[Visual Studio 2017 Preview](https://www.visualstudio.com/vs/preview)** and also **[VS Code](https://code.visualstudio.com)** are free to download. I typically use VS Code for frontend development and VS Community for ASP .NET development.  These are just suggestions.
 * **Debugging/Building within IDE** [Visual Studio 2017 Preview](https://www.visualstudio.com/vs/preview) with **"ASP.NET and web development"** selected in the Visual Studio Installer.
@@ -102,7 +119,7 @@ You will need the latest SDK version. This is the version being used in Docker.
 
 ***
 ### Note
-You don't have to debug or build from the Visual Studio IDE.  The `dotnet` CLR is installed with the .NET SDK, which allows you to run `dotnet build` and `dotnet publish` commands.
+You don't have to debug or build from the Visual Studio IDE.  The `dotnet` CLR is installed with the .NET SDK, which allows you to run `dotnet build` and `dotnet publish` commands.  These are also called when running `npm build` or `npm publish`.
 ***
 
 <a name="using-vs-preview">

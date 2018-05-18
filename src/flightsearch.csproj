@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="15.0" Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RuntimeFrameworkVersion>2.1.0-preview1-26216-03</RuntimeFrameworkVersion>
@@ -7,7 +7,6 @@
     <AssemblyName>FlightSearch</AssemblyName>
     <RootNamespace>FlightSearch</RootNamespace>
     <ApplicationIcon>ClientApp\favicon.ico</ApplicationIcon>
-    <StartupObject></StartupObject>
     <Authors>Jon McQuade</Authors>
     <Company>ACME Freelancing, Inc.</Company>
     <StartupObject></StartupObject>
@@ -18,10 +17,6 @@
     <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
     <OutputType>Exe</OutputType>
     <Version>2.1</Version>
-    <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>true</Optimize>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="2.16.3" />
@@ -91,10 +86,8 @@
   <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec Command="npm install" />
-    <Exec Condition="'$(Configuration)'=='Release'" Command="node node_modules/webpack/bin/webpack.js -p --config=webpack.config.vendor.js --mode production --env.prod" />
-    <Exec Condition="'$(Configuration)'=='Release'" Command="node node_modules/webpack/bin/webpack.js -p --mode production --env.prod" />
-    <Exec Condition="'$(Configuration)'=='Debug'" Command="node node_modules/webpack/bin/webpack.js --config=webpack.config.vendor.js --mode development --env.dev" />
-    <Exec Condition="'$(Configuration)'=='Debug'" Command="node node_modules/webpack/bin/webpack.js --mode development --env.dev" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js -p --config=webpack.config.vendor.js --mode production --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js -p --mode production --env.prod" />
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
