@@ -1,4 +1,5 @@
 # **`aspnetcore-react-redux`**
+# ! This project is no longer being updated. Future versions of ASP .NET may not support some React features !
 ## ASP.NET Core 2 MVC SPA boilerplate with JSON entpoints
 ### Hello from Jon in Tacoma, the toe of *SEA_TAC*, Zip \*\*404
 
